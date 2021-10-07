@@ -1,0 +1,26 @@
+Taking dump of MYSQL DB and pushing to S3 bucket:
+-------------------------------------------------
+
+#!/bin/bash
+password="<dbpassword>"
+backup_path="/home/ubuntu/mysql-db-dumb/ns-priya-dump"
+mysqldump -h <db_endpoint> --column-statistics=0 -u mysqladmin --password=$password ns-priya >$backup_path/ns-priya-$(date +%d-%m-%Y-%H-%M-%p).sql
+aws s3 cp $backup_path/ns-priya-$(date +%d-%m-%Y-%H-%M-%p).sql s3://mysql-dumb/ns-priya-daily-dump/ns-priya-$(date +%d-%m-%Y-%H-%M-%p)
+find $backup_path -name "*.sql" -type f -mtime +3 -delete
+
+
+#!/bin/bash
+password="<dbpassword>"
+backup_path="<dump_storage_path>"
+mysqldump -h <db_endpoint> --column-statistics=0 -u mysqladmin --password=$password ns-priya >$backup_path/dump-name-$(date +%d-%m-%Y-%H-%M-%p).sql
+aws s3 cp $backup_path/ans-philips-$(date +%d-%m-%Y-%H-%M-%p).sql s3://<bucket_name>/<folder_name>/dump-name-$(date +%d-%m-%Y-%H-%M-%p)
+find $backup_path -name "*.sql" -type f -mtime +3 -delete
+
+
+Cronjob to run this shell script daily:
+---------------------------------------
+30 2 * * * /home/ubuntu/db-files/dump.sh
+
+-> This cron job runs shell script daily at 2:30 AM
+-> Give user execution permissions for the shell script file
+    crontab -e
