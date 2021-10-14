@@ -1,0 +1,12 @@
+Replacing SERVER_HOST=.* with SERVER_HOST=http://localhost using sed command:
+-----------------------------------------------------------------------------
+
+
+sed -i 's/SERVER_HOST=.*/SERVER_HOST=http:\/\/localhost/gI' env
+
+
+env - file name where we have to replace the word
+
+SERVER_HOST=.* means - SERVER_HOST=hello or SERVER_HOST= or SERVER_HOST=boy or SERVER_HOST=http://lo  - All this will be replaced 
+
+SERVER_HOST=http:\/\/localhost - SERVER_HOST=http://localhost wont print SERVER_HOST=http://localhost due to sed command so need to add \ before /
